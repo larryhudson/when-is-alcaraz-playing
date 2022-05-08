@@ -6,3 +6,5 @@ _site
 package-lock.json
 .cache
 node_modules
+# Local Netlify folder
+.netlify
