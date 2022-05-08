@@ -1,17 +1,20 @@
 ---
+layout: layout.njk 
 permalink:
   serverless: /
 ---
 
 {% set nextMatch = futureMatches[0] %}
 <p>
-    Alcaraz is next playing in the {{ nextMatch.round_info.name }} of {{ nextMatch.season.name }}:</p>
+    Carlos Alcaraz is next playing:</p>
+<p id="local-time-string"></p>
 <p>
+    <span id="local-time-string"></span>
     <time id="next-match-time" datetime="{{ nextMatch.start_at | toUTCString }}">
-        {{ nextMatch.start_at }}
-        <span id="local-time-string"></span>
+        {{ nextMatch.start_at | toUTCString | toUTCFormattedString }}
     </p>
 </p>
-<p>Build time: {{ buildTime }}</p>
+<p>He is playing in the {{ nextMatch.round_info.name }} of {{ nextMatch.season.name }}.</p>
+<p>Last updated: {{ buildTime }}</p>
 <script>
     {% include 'local-time.js' %}</script>

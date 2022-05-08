@@ -11,6 +11,10 @@ module.exports = function (eleventyConfig) {
     return value.replace(" ", "T") + "Z";
   });
 
+  eleventyConfig.addFilter("toUTCFormattedString", (value) => {
+    return new Date(value).toUTCString();
+  });
+
   return {
     dir: {
       input: "./src",

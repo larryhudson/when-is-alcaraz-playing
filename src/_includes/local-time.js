@@ -5,5 +5,5 @@ window.addEventListener("load", function () {
 
   const localeString = new Date(utcString).toLocaleString();
 
-  localTimeElem.innerText = "(" + localeString + " your local time)";
+  localTimeElem.innerText = localeString + " (your local time)";
 });
