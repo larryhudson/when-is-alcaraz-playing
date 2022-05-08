@@ -9,12 +9,10 @@ permalink:
     Carlos Alcaraz is next playing:</p>
 <p id="local-time-string"></p>
 <p>
-    <span id="local-time-string"></span>
     <time id="next-match-time" datetime="{{ nextMatch.start_at | toUTCString }}">
         {{ nextMatch.start_at | toUTCString | toUTCFormattedString }}
-    </p>
+    </time>
 </p>
 <p>He is playing in the {{ nextMatch.round_info.name }} of {{ nextMatch.season.name }}.</p>
 <p>Last updated: {{ buildTime }}</p>
-<script>
-    {% include 'local-time.js' %}</script>
+<script>{% include 'local-time.js' %}</script>
