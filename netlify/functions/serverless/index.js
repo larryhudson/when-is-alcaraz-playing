@@ -23,7 +23,7 @@ async function handler(event) {
         "Content-Type": "text/html; charset=UTF-8",
       },
       body: page.content,
-      ttl: 3600,
+      ttl: 15,
     };
   } catch (error) {
     // Only console log for matching serverless paths
