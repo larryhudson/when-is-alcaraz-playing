@@ -1,0 +1,17 @@
+---
+permalink:
+  serverless: /
+---
+
+{% set nextMatch = futureMatches[0] %}
+<p>
+    Alcaraz is next playing in the {{ nextMatch.round_info.name }} of {{ nextMatch.season.name }}:</p>
+<p>
+    <time id="next-match-time" datetime="{{ nextMatch.start_at | toUTCString }}">
+        {{ nextMatch.start_at }}
+        <span id="local-time-string"></span>
+    </p>
+</p>
+<p>Build time: {{ buildTime }}</p>
+<script>
+    {% include 'local-time.js' %}</script>
