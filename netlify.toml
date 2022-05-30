@@ -1,6 +1,9 @@
+[[edge_functions]]
+path = "/"
+function = "next-game-summary"
+
 [[redirects]]
-from = "/"
-to = "/.netlify/builders/serverless"
+from = "/next-game-serverless"
+to = "/.netlify/builders/next-game"
 status = 200
 force = true
-_generated_by_eleventy_serverless = "serverless"
