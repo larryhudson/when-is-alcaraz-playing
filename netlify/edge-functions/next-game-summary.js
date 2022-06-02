@@ -1,3 +1,8 @@
+import dayjs from "https://esm.sh/dayjs@v1.11.2";
+import cityTimezones from "https://esm.sh/city-timezones@v1.2.0";
+
+const ALCARAZ_TEAM_ID = 13353;
+
 function getMatchSummary(match) {
   const verbByStatus = {
     finished: "played",
@@ -18,15 +23,16 @@ function getMatchSummary(match) {
 }
 
 export default async (request, context) => {
-  const nextGameUrl = `https://when-is-alcaraz-playing.netlify.app/next-game-serverless`;
+  const requestUrl = new URL(request.url);
+
+  const nextGamePath = `/next-game-serverless`;
+  const nextGameUrl = requestUrl.origin + nextGamePath;
 
   const nextGame = await fetch(nextGameUrl).then((r) => r.json());
 
-  console.log(nextGame);
+  return context.json(context.geo);
 
-  return new Response(nextGame, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  console.log(context.geo);
+
+  return new Response(getMatchSummary(nextGame));
 };
