@@ -3,7 +3,7 @@ path = "/"
 function = "next-game-summary"
 
 [[redirects]]
-from = "/next-game-serverless"
+from = "/"
 to = "/.netlify/builders/next-game"
 status = 200
 force = true

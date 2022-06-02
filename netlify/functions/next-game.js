@@ -27,7 +27,7 @@ async function handler(event, context) {
   // logic to generate the required content
   return {
     statusCode: 200,
-    body: JSON.stringify(nextMatch),
+    body: JSON.stringify({ ...nextMatch, fetched: new Date() }),
     headers: {
       "Content-Type": "application/json",
     },

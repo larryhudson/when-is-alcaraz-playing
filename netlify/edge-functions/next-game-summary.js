@@ -27,14 +27,10 @@ function getMatchSummary(match, timezone) {
 }
 
 function getTimezoneFromGeo(geoObject) {
-  const locationKeys = ["city", "subdivision", "country"];
-
-  // context object might not have all the info
-  const locationKeysInObject = locationKeys
-    .filter((locationKey) => locationKey in geoObject)
-    .map((locationKey) => geoObject[locationKey].name);
-
-  const locationString = locationKeysInObject.join(" ");
+  const locationString = ["city", "subdivision", "country"]
+    .filter((locationKey) => locationKey in geoObject) // check if geo info has the info
+    .map((locationKey) => geoObject[locationKey].name) // get the 'name' from the geo info (eg. the country name, city name)
+    .join(" "); // join together
 
   const timezones = cityTimezones.findFromCityStateProvince(locationString);
   if (timezones.length > 0) {
@@ -45,12 +41,8 @@ function getTimezoneFromGeo(geoObject) {
 }
 
 export default async (request, context) => {
-  const requestUrl = new URL(request.url);
-
-  const nextGamePath = `/next-game-serverless`;
-  const nextGameUrl = requestUrl.origin + nextGamePath;
-
-  const nextGame = await fetch(nextGameUrl).then((r) => r.json());
+  const response = await context.next();
+  const nextGame = await response.json();
 
   const timezone = getTimezoneFromGeo(context.geo);
 
@@ -60,7 +52,7 @@ export default async (request, context) => {
     summary: gameSummary,
     timezone,
     geo: context.geo,
+    fetched: nextGame.fetched,
+    generated: new Date(),
   });
-
-  return new Response(gameSummary);
 };
