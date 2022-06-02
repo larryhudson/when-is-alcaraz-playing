@@ -1,9 +1,8 @@
-import dayjs from "https://esm.sh/dayjs@v1.11.2";
 import cityTimezones from "https://esm.sh/city-timezones@v1.2.0";
 
 const ALCARAZ_TEAM_ID = 13353;
 
-function getMatchSummary(match) {
+function getMatchSummary(match, timezone) {
   const verbByStatus = {
     finished: "played",
     inprogress: "is playing",
@@ -16,10 +15,32 @@ function getMatchSummary(match) {
 
   const verb = verbByStatus[match.status];
 
+  const utcDate = new Date(match.start_at);
+  const localDateString = timezone
+    ? utcDate.toLocaleString("en-AU", { timeZone: timezone })
+    : match.start_at;
+
   const otherPlayer =
     match.home_team_id === ALCARAZ_TEAM_ID ? match.away_team : match.home_team;
 
-  return `Carlos Alcaraz ${verb} against ${otherPlayer.name} on ${match.start_at}`;
+  return `Carlos Alcaraz ${verb} against ${otherPlayer.name} on ${localDateString}`;
+}
+
+function getTimezoneFromGeo(geoObject) {
+  const locationKeys = ["city", "subdivision", "country"];
+
+  // context object might not have all the info
+  const locationKeysInObject = locationKeys.filter(
+    (locationKey) => locationKey in geoObject
+  );
+  const locationString = locationKeysInObject.join(" ");
+
+  const timezones = cityTimezones.findFromCityStateProvince(locationString);
+  if (timezones.length > 0) {
+    return timezones[0].timezone;
+  } else {
+    return null;
+  }
 }
 
 export default async (request, context) => {
@@ -30,9 +51,9 @@ export default async (request, context) => {
 
   const nextGame = await fetch(nextGameUrl).then((r) => r.json());
 
-  return context.json(context.geo);
+  const timezone = getTimezoneFromGeo(context.geo);
 
-  console.log(context.geo);
+  const gameSummary = getMatchSummary(nextGame, timezone);
 
-  return new Response(getMatchSummary(nextGame));
+  return new Response(gameSummary);
 };
