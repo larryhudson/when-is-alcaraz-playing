@@ -55,5 +55,11 @@ export default async (request, context) => {
 
   const gameSummary = getMatchSummary(nextGame, timezone);
 
+  return context.json({
+    summary: gameSummary,
+    timezone,
+    geo: context.geo,
+  });
+
   return new Response(gameSummary);
 };
