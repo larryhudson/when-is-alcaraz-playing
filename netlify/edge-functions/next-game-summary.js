@@ -30,9 +30,10 @@ function getTimezoneFromGeo(geoObject) {
   const locationKeys = ["city", "subdivision", "country"];
 
   // context object might not have all the info
-  const locationKeysInObject = locationKeys.filter(
-    (locationKey) => locationKey in geoObject
-  );
+  const locationKeysInObject = locationKeys
+    .filter((locationKey) => locationKey in geoObject)
+    .map((locationKey) => geoObject[locationKey].name);
+
   const locationString = locationKeysInObject.join(" ");
 
   const timezones = cityTimezones.findFromCityStateProvince(locationString);
